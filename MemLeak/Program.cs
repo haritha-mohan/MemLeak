@@ -1,3 +1,14 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using MemLeak.Commands.AnalyzeCommandSet;
+using Mono.Options;
 
-Console.WriteLine("Hello, World!");
+namespace MemLeak;
+public static class Program {
+    public static int Main(string[] args)
+    {
+        CommandSet commands = new("ml")
+        {
+            new AnalyzeCommand(),
+        };
+        return commands.Run(args);
+    }
+}
