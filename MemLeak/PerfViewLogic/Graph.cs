@@ -1,13 +1,10 @@
 using FastSerialization;    // For IStreamReader
 using Graphs;
-using Microsoft.Diagnostics.Utilities;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using Address = System.UInt64;
+using System.Security;
 
 // Graph contains generic Graph-Node traversal algorithms (spanning tree etc).
 namespace Graphs
@@ -407,7 +404,7 @@ namespace Graphs
                 }
 
                 sw.WriteLine("  <Type Name=\"{0}\" Size=\"{1}\" Count=\"{2}\"/>",
-                    XmlUtilities.XmlEscape(GetType(sizeAndCount.TypeIdx, typeStorage).Name), sizeAndCount.Size, sizeAndCount.Count);
+                    SecurityElement.Escape(GetType(sizeAndCount.TypeIdx, typeStorage).Name), sizeAndCount.Size, sizeAndCount.Count);
             }
             sw.WriteLine("</HistogramByType>");
             return sw.ToString();
@@ -808,7 +805,7 @@ namespace Graphs
             }
 
             writer.Write("{0}<Node Index=\"{1}\" TypeIndex=\"{2}\" Size=\"{3}\" Type=\"{4}\" NumChildren=\"{5}\"{6}",
-                prefix, (int)Index, TypeIndex, Size, XmlUtilities.XmlEscape(GetType(typeStorage).Name),
+                prefix, (int)Index, TypeIndex, Size, SecurityElement.Escape(GetType(typeStorage).Name),
                 ChildCount, additinalAttribs);
             var childIndex = GetFirstChildIndex();
             if (childIndex != NodeIndex.Invalid)
@@ -1033,7 +1030,7 @@ namespace Graphs
         }
         public void WriteXml(TextWriter writer, string prefix = "")
         {
-            writer.WriteLine("{0}<NodeType Index=\"{1}\" Name=\"{2}\"/>", prefix, (int)Index, XmlUtilities.XmlEscape(Name));
+            writer.WriteLine("{0}<NodeType Index=\"{1}\" Name=\"{2}\"/>", prefix, (int)Index, SecurityElement.Escape(Name));
         }
         #region private
         protected internal NodeType(Graph graph)
@@ -1256,7 +1253,7 @@ namespace Graphs
 
             node = graph.GetNode(graph.RootIndex, nodeStorage);
             writer.WriteLine("<GraphDump RootNode=\"{0}\" NumNodes=\"{1}\" NumTypes=\"{2}\" TotalSize=\"{3}\" SizeOfGraphDescription=\"{4}\">",
-                XmlUtilities.XmlEscape(node.GetType(typeStorage).Name),
+                SecurityElement.Escape(node.GetType(typeStorage).Name),
                 graph.NodeIndexLimit,
                 graph.NodeTypeIndexLimit,
                 graph.TotalSize,
@@ -1271,7 +1268,7 @@ namespace Graphs
                 node = graph.GetNode(nodeIdx, nodeStorage);
                 string name = node.GetType(typeStorage).Name;
 
-                writer.Write("  <Node Address=\"{0:x}\" Size=\"{1}\" Type=\"{2}\"> ", graph.GetAddress(nodeIdx), node.Size, XmlUtilities.XmlEscape(name));
+                writer.Write("  <Node Address=\"{0:x}\" Size=\"{1}\" Type=\"{2}\"> ", graph.GetAddress(nodeIdx), node.Size, SecurityElement.Escape(name));
                 bool isRoot = graph.GetAddress(node.Index) == 0;
                 int childCnt = 0;
                 for (var childIndex = node.GetFirstChildIndex(); childIndex != NodeIndex.Invalid; childIndex = node.GetNextChildIndex())
@@ -1944,7 +1941,7 @@ public class SpanningTree
             var m = Regex.Match(priorityPatArray[i], @"(.*)->(-?\d+.?\d*)");
             if (!m.Success)
             {
-                if (StringUtilities.IsNullOrWhiteSpace(priorityPatArray[i]))
+                if (String.IsNullOrWhiteSpace(priorityPatArray[i]))
                 {
                     continue;
                 }
