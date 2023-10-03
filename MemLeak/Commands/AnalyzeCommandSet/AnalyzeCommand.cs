@@ -21,6 +21,9 @@ internal class AnalyzeCommand : MLCommand
     protected override int InvokeInternal()
     {
         // invoke functionality for Analyze command
-        throw new NotImplementedException();
+        var heapDump = new GCHeapDump(analyzeArguments.AppPath);
+        var memoryGraph = heapDump.MemoryGraph;
+        Console.WriteLine("Mem Graph Nodes Count: " + memoryGraph.NodeCount);
+        return 0;
     }
 }
