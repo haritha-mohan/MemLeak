@@ -1,5 +1,5 @@
 # MemLeak
-A platform-agnostic command line tool that generates a simple visual representation of strongly connected components- which could be an indication of a potential memory leak. 
+A x-plat command line tool that generates a simple visual representation of strongly connected components- which could be an indication of a potential memory leak. 
 Especially helpful when application is walking the bridge between managed and unmanaged memory.
 
 ## MemLeak, from a functional perspective
