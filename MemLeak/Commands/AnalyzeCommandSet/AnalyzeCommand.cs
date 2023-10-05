@@ -1,3 +1,4 @@
+using Graphs;
 using Mono.Options;
 
 namespace MemLeak.Commands.AnalyzeCommandSet;
@@ -22,8 +23,13 @@ internal class AnalyzeCommand : MLCommand
     {
         // invoke functionality for Analyze command
         var heapDump = new GCHeapDump(analyzeArguments.AppPath);
-        var memoryGraph = heapDump.MemoryGraph;
-        Console.WriteLine("Mem Graph Nodes Count: " + memoryGraph.NodeCount);
+        var graph = heapDump.MemoryGraph;
+        // with the memory graph what needs to be done?
+        // need to iterate through all the nodes of the graph and detect strongly connected cycles...
+        Console.WriteLine("Mem Graph Nodes Count: " + graph.NodeCount);
+        FindSCC findScc = new();
+        findScc.Init(graph, Console.Out, Console.Out);
+        findScc.FindCycles(graph);
         return 0;
     }
 }
