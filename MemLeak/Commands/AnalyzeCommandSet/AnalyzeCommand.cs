@@ -30,6 +30,11 @@ internal class AnalyzeCommand : MLCommand
         FindSCC findScc = new();
         findScc.Init(graph, Console.Out, Console.Out);
         findScc.FindCycles(graph);
+        Console.WriteLine("distinct nodes of interest:");
+        foreach (var node in findScc.respNodes)
+        {
+            Console.WriteLine(node);
+        }
         return 0;
     }
 }
