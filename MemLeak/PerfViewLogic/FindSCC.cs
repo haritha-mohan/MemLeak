@@ -117,20 +117,18 @@ public class FindSCC
                 Console.WriteLine("current cycle length: " + m_currentCycle.Count);
                 respNodes.Add(m_graph.GetType(m_sccInfo[m_currentCycle[0]].node.TypeIndex, type).Name);
                 // Now print out all the nodes in this cycle.
+                List<string> typeNames = new();
                     for (var i = m_currentCycle.Count - 1; i >= 0; i--)
                     {
                         var nodeInCycle = m_sccInfo[m_currentCycle[i]].node;
                         // Resetting this for printing purpose below.
                         m_sccInfo[m_currentCycle[i]].m_index = 1;
-                        // string typeName = GetPrintableString(m_graph.GetType(nodeInCycle.TypeIndex, type).Name);
                         m_sccInfo[m_currentCycle[i]].type = m_graph.GetType(nodeInCycle.TypeIndex, type).Name;
-                        Console.WriteLine("type in cycle: " + m_sccInfo[m_currentCycle[i]].type);
+                        if(typeNames.Contains(m_sccInfo[m_currentCycle[i]].type))
+                            continue;
+                        typeNames.Add(m_sccInfo[m_currentCycle[i]].type);
+                        Console.WriteLine(m_sccInfo[m_currentCycle[i]].type);
                     }
-                    // Now print out the actual edges. Reusing the m_index field in SCCInfo.
-                    // It doesn't matter where we start, just start from the first one.
-                    startNodeIdx = m_currentCycle[^1];
-                    // Console.WriteLine("Edges in cycle path");
-                    // PrintEdges(startNodeIdx);
             }
         }
     }
