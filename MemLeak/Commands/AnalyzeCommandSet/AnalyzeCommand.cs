@@ -14,7 +14,7 @@ internal class AnalyzeCommand : MLCommand
             "usage: analyze [OPTIONS] <pathToApp>",
             "",
             "Identifies culprit objects that are responsible for the strongly connected cycles (which leads to a memory leak) ",
-            { "appPath=", "The path to app to be analyzed.", p => analyzeArguments.AppPath = p },
+            { "dump=", "The path to the dump to be analyzed.", p => analyzeArguments.AppPath = p },
             { "help|h", "Show this help message", h => ShowHelp = h is not null },
         };
     }
