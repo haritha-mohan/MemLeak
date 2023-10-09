@@ -133,12 +133,5 @@ public class FindSCC
         }
     }
 
-    public void FindCycles(MemoryGraph graph)
-    {
-        for(var i =0; i < graph.NodeCount; i++)
-        {
-            if (m_sccInfo[i].m_index == 0)
-                FindCyclesOne(i);
-        }
+    public void FindCycles(MemoryGraph graph) => FindCyclesOne((int)graph.RootIndex);
     }
-}
