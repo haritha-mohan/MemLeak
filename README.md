@@ -3,7 +3,7 @@ A x-plat command line tool that generates a simple visual representation of stro
 Especially helpful when application is walking the bridge between managed and unmanaged memory.
 
 ## How to use MemLeak
-sample command: analyze -appPath="20230729_134428_16855.gcdump"
+sample command: analyze -dump="20230729_134428_16855.gcdump"
 
 ## MemLeak, from a functional perspective
 - input: path to app (our use case specifically MAUI app)
