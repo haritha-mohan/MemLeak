@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace Graphs;
 
 public class FindSCC
@@ -17,9 +19,11 @@ public class FindSCC
     private List<int> m_currentCycle = new ();
     private int startNodeIdx;
     public HashSet<string> respNodes = new ();
+    public string? @namespace;
     
-    public void Init(MemoryGraph graph, TextWriter writer, TextWriter log)
+    public void Init(MemoryGraph graph, TextWriter writer, TextWriter log, string? @namespace = null)
     {
+        this.@namespace = @namespace;
         m_graph = graph;
         m_sccInfo = new SCCInfo[(int)graph.NodeIndexLimit];
         for (var i = 0; i < m_sccInfo.Length; i++)
@@ -112,8 +116,11 @@ public class FindSCC
             
             if (m_currentCycle.Count > 1)
             {
+                var nodeName = m_graph.GetType(m_sccInfo[m_currentCycle[0]].node.TypeIndex, type).Name;
+                if (!nodeName.Contains(@namespace))
+                    return;
                 Console.WriteLine("cycle detected");
-                Console.WriteLine("node responsible: " + m_graph.GetType(m_sccInfo[m_currentCycle[0]].node.TypeIndex, type).Name);
+                Console.WriteLine("node responsible: " + nodeName);
                 Console.WriteLine("current cycle length: " + m_currentCycle.Count);
                 respNodes.Add(m_graph.GetType(m_sccInfo[m_currentCycle[0]].node.TypeIndex, type).Name);
                 // Now print out all the nodes in this cycle.
@@ -124,8 +131,10 @@ public class FindSCC
                         // Resetting this for printing purpose below.
                         m_sccInfo[m_currentCycle[i]].m_index = 1;
                         m_sccInfo[m_currentCycle[i]].type = m_graph.GetType(nodeInCycle.TypeIndex, type).Name;
-                        if(typeNames.Contains(m_sccInfo[m_currentCycle[i]].type))
+
+                        if (typeNames.Contains(m_sccInfo[m_currentCycle[i]].type))
                             continue;
+
                         typeNames.Add(m_sccInfo[m_currentCycle[i]].type);
                         Console.WriteLine(m_sccInfo[m_currentCycle[i]].type);
                     }
