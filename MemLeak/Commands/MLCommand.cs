@@ -6,11 +6,11 @@ internal abstract class MLCommand : Command
 {
     protected bool ShowHelp = false;
     public MLCommand(string name, string help = null) : base(name, help) { }
-    protected MLCommand(string name) : this (name, string.Empty) {}
+    protected MLCommand(string name) : this(name, string.Empty) { }
 
-    public sealed override int Invoke (IEnumerable<string> arguments)
+    public sealed override int Invoke(IEnumerable<string> arguments)
     {
-        Options.Parse (arguments);
+        Options.Parse(arguments);
         if (ShowHelp)
         {
             Options.WriteOptionDescriptions(Console.Out);
@@ -19,6 +19,6 @@ internal abstract class MLCommand : Command
 
         return InvokeInternal();
     }
-    
-    protected abstract int InvokeInternal ();
+
+    protected abstract int InvokeInternal();
 }

@@ -11,16 +11,16 @@ public class FindSCC
         public Node node; // node is only allocated for the nodes we need to traverse.
         public string type; // We don't expect to have that many nodes so we just store the type here.
     }
-    
+
     private SCCInfo[] m_sccInfo;
     private Stack<int> m_stack;
     private MemoryGraph m_graph;
     private int index;
-    private List<int> m_currentCycle = new ();
+    private List<int> m_currentCycle = new();
     private int startNodeIdx;
-    public HashSet<string> respNodes = new ();
+    public HashSet<string> respNodes = new();
     public string? @namespace;
-    
+
     public void Init(MemoryGraph graph, TextWriter writer, TextWriter log, string? @namespace = null)
     {
         this.@namespace = @namespace;
@@ -33,7 +33,7 @@ public class FindSCC
         index = 1;
         m_stack = new Stack<int>();
     }
-    
+
     private void PrintEdges(int idx)
     {
         var currentNode = m_sccInfo[idx].node;
@@ -44,9 +44,9 @@ public class FindSCC
             Console.WriteLine("idx#{0}:{1:x}({2}), child#{3}: {4:x}({5})",
                 idx, m_graph.GetAddress((NodeIndex)idx), m_sccInfo[idx].type,
                 (int)childIdx, m_graph.GetAddress(childIdx), m_sccInfo[(int)childIdx].type);
-            
+
             // child node processing
-            if (idx == (int)childIdx) 
+            if (idx == (int)childIdx)
                 continue; //full circle has been explored
 
             if (m_currentCycle.Contains((int)childIdx))
@@ -59,14 +59,17 @@ public class FindSCC
                         m_sccInfo[(int)childIdx].type,
                         m_graph.GetAddress(childIdx));
                     continue;
-                } 
-                if (m_sccInfo[(int)childIdx].m_index == 1) {
+                }
+                if (m_sccInfo[(int)childIdx].m_index == 1)
+                {
                     m_sccInfo[(int)childIdx].m_index = 0;
                     Console.WriteLine("{0}({1:x})",
                         m_sccInfo[idx].type,
                         m_graph.GetAddress((NodeIndex)idx));
                     PrintEdges((int)childIdx);
-                } else {
+                }
+                else
+                {
                     Console.WriteLine("{0}({1:x}){2}({3:x}) [connecting to an existing graph in cycle]",
                         m_sccInfo[idx].type,
                         m_graph.GetAddress((NodeIndex)idx),
@@ -113,7 +116,7 @@ public class FindSCC
                 m_graph.GetType(node.TypeIndex, type);
                 m_currentCycle.Add(currentIdx);
             } while (idx != currentIdx);
-            
+
             if (m_currentCycle.Count > 1)
             {
                 var nodeName = m_graph.GetType(m_sccInfo[m_currentCycle[0]].node.TypeIndex, type).Name;
@@ -125,22 +128,22 @@ public class FindSCC
                 respNodes.Add(m_graph.GetType(m_sccInfo[m_currentCycle[0]].node.TypeIndex, type).Name);
                 // Now print out all the nodes in this cycle.
                 List<string> typeNames = new();
-                    for (var i = m_currentCycle.Count - 1; i >= 0; i--)
-                    {
-                        var nodeInCycle = m_sccInfo[m_currentCycle[i]].node;
-                        // Resetting this for printing purpose below.
-                        m_sccInfo[m_currentCycle[i]].m_index = 1;
-                        m_sccInfo[m_currentCycle[i]].type = m_graph.GetType(nodeInCycle.TypeIndex, type).Name;
+                for (var i = m_currentCycle.Count - 1; i >= 0; i--)
+                {
+                    var nodeInCycle = m_sccInfo[m_currentCycle[i]].node;
+                    // Resetting this for printing purpose below.
+                    m_sccInfo[m_currentCycle[i]].m_index = 1;
+                    m_sccInfo[m_currentCycle[i]].type = m_graph.GetType(nodeInCycle.TypeIndex, type).Name;
 
-                        if (typeNames.Contains(m_sccInfo[m_currentCycle[i]].type))
-                            continue;
+                    if (typeNames.Contains(m_sccInfo[m_currentCycle[i]].type))
+                        continue;
 
-                        typeNames.Add(m_sccInfo[m_currentCycle[i]].type);
-                        Console.WriteLine(m_sccInfo[m_currentCycle[i]].type);
-                    }
+                    typeNames.Add(m_sccInfo[m_currentCycle[i]].type);
+                    Console.WriteLine(m_sccInfo[m_currentCycle[i]].type);
+                }
             }
         }
     }
 
     public void FindCycles(MemoryGraph graph) => FindCyclesOne((int)graph.RootIndex);
-    }
+}

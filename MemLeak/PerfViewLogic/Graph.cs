@@ -599,7 +599,7 @@ namespace Graphs
                 writer.Write(deserializer.ReadInt64());
                 blobCount -= 8;
             }
-            while(0 < blobCount)
+            while (0 < blobCount)
             {
                 writer.Write(deserializer.ReadByte());
                 --blobCount;
@@ -912,13 +912,13 @@ namespace Graphs
             }
 
             writer.Write((byte)((value >> 28) | 0x80));
-            fourBytes:
+        fourBytes:
             writer.Write((byte)((value >> 21) | 0x80));
-            threeBytes:
+        threeBytes:
             writer.Write((byte)((value >> 14) | 0x80));
-            twoBytes:
+        twoBytes:
             writer.Write((byte)((value >> 7) | 0x80));
-            oneByte:
+        oneByte:
             writer.Write((byte)(value & 0x7F));
         }
 
@@ -2474,7 +2474,7 @@ public class GraphSampler
                     // for long chains of objects.  
                     VisitNode(nodeIdx, true, true);
                 }
-                            }
+            }
         }
         else
         {

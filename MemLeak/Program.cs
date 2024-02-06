@@ -2,7 +2,8 @@
 using Mono.Options;
 
 namespace MemLeak;
-public static class Program {
+public static class Program
+{
     public static int Main(string[] args)
     {
         CommandSet commands = new("ml")

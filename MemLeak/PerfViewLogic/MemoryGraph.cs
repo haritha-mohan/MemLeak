@@ -20,7 +20,7 @@ namespace Graphs
             {
                 m_addressToNodeIndex = new Dictionary<Address, NodeIndex>(expectedSize);
             }
-                                                              
+
             m_nodeAddresses = new SegmentedList<Address>(SegmentSize, expectedSize);
         }
 
@@ -137,7 +137,7 @@ namespace Graphs
             {
                 serializer.Write((int)m_nodeAddresses.Count);
             }
-            
+
             for (int i = 0; i < m_nodeAddresses.Count; i++)
             {
                 serializer.Write((long)m_nodeAddresses[i]);
@@ -309,7 +309,7 @@ namespace Graphs
     }
 }
 
-#if false 
+#if false
 namespace Graphs.Samples
 {
     class Sample
