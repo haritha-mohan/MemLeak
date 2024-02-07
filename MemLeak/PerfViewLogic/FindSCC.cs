@@ -15,12 +15,12 @@ public class FindSCC
     private MemoryGraph m_graph;
     private int index;
     private List<int> m_currentCycle = new();
-    private int startNodeIdx;
+    private int startNodeIdx = 0;
     public HashSet<string> respNodes = new();
-    public string? @namespace;
+    public string @namespace;
     public bool distinctOnly;
 
-    public void Init(MemoryGraph graph, TextWriter writer, TextWriter log, bool distinctOnly, string? @namespace = null)
+    public void Init(MemoryGraph graph, TextWriter writer, TextWriter log, bool distinctOnly, string @namespace = null)
     {
         this.@namespace = @namespace;
         m_graph = graph;
