@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace Graphs;
 
 public class FindSCC
@@ -20,8 +18,9 @@ public class FindSCC
     private int startNodeIdx;
     public HashSet<string> respNodes = new();
     public string? @namespace;
+    public bool distinctOnly;
 
-    public void Init(MemoryGraph graph, TextWriter writer, TextWriter log, string? @namespace = null)
+    public void Init(MemoryGraph graph, TextWriter writer, TextWriter log, bool distinctOnly, string? @namespace = null)
     {
         this.@namespace = @namespace;
         m_graph = graph;
@@ -32,6 +31,7 @@ public class FindSCC
         }
         index = 1;
         m_stack = new Stack<int>();
+        this.distinctOnly = distinctOnly;
     }
 
     private void PrintEdges(int idx)
@@ -122,9 +122,8 @@ public class FindSCC
                 var nodeName = m_graph.GetType(m_sccInfo[m_currentCycle[0]].node.TypeIndex, type).Name;
                 if (!nodeName.Contains(@namespace))
                     return;
-                Console.WriteLine("cycle detected");
-                Console.WriteLine("node responsible: " + nodeName);
-                Console.WriteLine("current cycle length: " + m_currentCycle.Count);
+                // Console.WriteLine("node responsible: " + nodeName);
+                // Console.WriteLine("current cycle length: " + m_currentCycle.Count);
                 respNodes.Add(m_graph.GetType(m_sccInfo[m_currentCycle[0]].node.TypeIndex, type).Name);
                 // Now print out all the nodes in this cycle.
                 List<string> typeNames = new();
@@ -139,7 +138,8 @@ public class FindSCC
                         continue;
 
                     typeNames.Add(m_sccInfo[m_currentCycle[i]].type);
-                    Console.WriteLine(m_sccInfo[m_currentCycle[i]].type);
+                    if (!distinctOnly)
+                        Console.WriteLine(m_sccInfo[m_currentCycle[i]].type);
                 }
             }
         }
