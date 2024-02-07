@@ -6,7 +6,7 @@ public static class Program
 {
     public static int Main(string[] args)
     {
-        CommandSet commands = new("ml")
+        CommandSet commands = new("memleak")
         {
             new AnalyzeCommand(),
         };
